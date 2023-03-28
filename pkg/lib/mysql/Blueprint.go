@@ -22,6 +22,7 @@ func (bp *Blueprint) Id(name string, length int) interfaces.Blueprint {
 		Length:        length,
 		AutoIncrement: true,
 		Primary:       true,
+		unsigned:      true,
 		Comment:       "索引ID",
 	})
 	return bp
@@ -40,6 +41,40 @@ func (bp *Blueprint) Text(name string) interfaces.Blueprint {
 	bp.metadata = append(bp.metadata, &meta{
 		Name: name,
 		Type: "TEXT",
+	})
+	return bp
+}
+
+func (bp *Blueprint) LongText(name string) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		Name: name,
+		Type: "LONGTEXT",
+	})
+	return bp
+}
+
+func (bp *Blueprint) BigInt(name string, length int) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		Name:   name,
+		Type:   "BIGINT",
+		Length: length,
+	})
+	return bp
+}
+
+func (bp *Blueprint) Collate(collate string) interfaces.Blueprint {
+	if len(bp.metadata) != 0 {
+		bp.metadata[len(bp.metadata)-1].Collate = collate
+	}
+	return bp
+}
+
+func (bp *Blueprint) Decimal(name string, length, decimals int) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		Name:     name,
+		Type:     "DECIMAL",
+		Length:   length,
+		Decimals: decimals,
 	})
 	return bp
 }
@@ -111,6 +146,13 @@ func (bp *Blueprint) Timestamps() {
 func (bp *Blueprint) Nullable() interfaces.Blueprint {
 	if len(bp.metadata) != 0 {
 		bp.metadata[len(bp.metadata)-1].Nullable = true
+	}
+	return bp
+}
+
+func (bp *Blueprint) Unsigned() interfaces.Blueprint {
+	if len(bp.metadata) != 0 {
+		bp.metadata[len(bp.metadata)-1].unsigned = true
 	}
 	return bp
 }

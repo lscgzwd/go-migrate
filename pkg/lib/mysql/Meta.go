@@ -10,11 +10,14 @@ type meta struct {
 	Name          string
 	Type          string
 	Length        int
+	Decimals      int
 	Nullable      bool
 	Unique        bool
 	Index         bool
 	Primary       bool
 	AutoIncrement bool
+	unsigned      bool
+	Collate       string
 	Default       interface{}
 	Comment       string
 	Foreign       *foreignMeta
@@ -46,9 +49,18 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 		if m.Type != "" {
 			s += fmt.Sprintf("`%s` %s", m.Name, m.Type)
 		}
-
-		if m.Length != 0 {
+		if m.Decimals != 0 {
+			s += fmt.Sprintf("(%d,%d)", m.Length, m.Decimals)
+		} else if m.Length != 0 {
 			s += fmt.Sprintf("(%d)", m.Length)
+		}
+
+		if m.Collate != "" {
+			s += " " + m.Collate
+		}
+
+		if m.unsigned {
+			s += " UNSIGNED"
 		}
 
 		if s != "" && !m.Nullable {

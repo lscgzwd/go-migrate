@@ -4,13 +4,18 @@ type Blueprint interface {
 	Id(name string, length int) Blueprint
 	String(name string, length int) Blueprint
 	Text(name string) Blueprint
+	LongText(name string) Blueprint
+	BigInt(name string, length int) Blueprint
 	Integer(name string, length int) Blueprint
+	Decimal(name string, length, decimals int) Blueprint
 	Date(name string) Blueprint
 	Comment(value string) Blueprint
+	Collate(collate string) Blueprint
 	TableComment(value string) Blueprint
 	Boolean(name string) Blueprint
 	DateTime(name string) Blueprint
 	Nullable() Blueprint
+	Unsigned() Blueprint
 	Unique(column ...string) Blueprint
 	Index(column ...string) Blueprint
 	Default(value interface{}) Blueprint
