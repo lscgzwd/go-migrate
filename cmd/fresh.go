@@ -3,7 +3,7 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/laijunbin/go-migrate/config"
+	"github.com/panda843/go-migrate/config"
 	"github.com/spf13/cobra"
 )
 
