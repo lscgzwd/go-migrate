@@ -5,6 +5,7 @@ go 1.17
 require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/jmoiron/sqlx v1.3.4
+	github.com/laijunbin/go-migrate v1.2.1
 	github.com/laijunbin/go-solve-kit v0.2.1
 	github.com/spf13/cobra v1.4.0
 	golang.org/x/mod v0.5.1

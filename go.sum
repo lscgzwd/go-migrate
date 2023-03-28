@@ -6,6 +6,8 @@ github.com/inconshreveable/mousetrap v1.0.0 h1:Z8tu5sraLXCXIcARxBp/8cbvlwVa7Z1NH
 github.com/inconshreveable/mousetrap v1.0.0/go.mod h1:PxqpIevigyE2G7u3NXJIT2ANytuPF1OarO4DADm73n8=
 github.com/jmoiron/sqlx v1.3.4 h1:wv+0IJZfL5z0uZoUjlpKgHkgaFSYD+r9CfrXjEXsO7w=
 github.com/jmoiron/sqlx v1.3.4/go.mod h1:2BljVx/86SuTyjE+aPYlHCTNvZrnJXghYGpNiXLBMCQ=
+github.com/laijunbin/go-migrate v1.2.1 h1:jW3XKfSESmLSBK6/qpq7mNOGcRGgTM8cHeVluMOG7Gk=
+github.com/laijunbin/go-migrate v1.2.1/go.mod h1:qKUXBhZhTxYvYTUSNqqTz0IW1AZHhk6dCJX84fBt0lM=
 github.com/laijunbin/go-solve-kit v0.2.1 h1:7Q7ZagAGYRrQsK8WKhCLLYe/Z60+gkscEfu1dnC2JTQ=
 github.com/laijunbin/go-solve-kit v0.2.1/go.mod h1:AbHk5pyrwGwr7Fzgm680Tlk3ftOFfEkQmcW2U0WwwyU=
 github.com/lib/pq v1.2.0 h1:LXpIM/LZ5xGFhOpXAQUIMM1HdyqzVYM13zNdjCEEcA0=
