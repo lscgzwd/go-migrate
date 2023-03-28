@@ -59,6 +59,10 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 			s += " AUTO_INCREMENT"
 		}
 
+		if m.Comment != "" && m.TableComment == "" {
+			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
+		}
+
 		if m.Primary {
 			if s != "" {
 				s += ", "
@@ -84,9 +88,6 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 			s += fmt.Sprintf(" DEFAULT %v", m.Default)
 		}
 
-		if m.Comment != "" && m.TableComment == "" {
-			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
-		}
 		if m.TableComment != "" {
 			tableComment = m.TableComment
 			return nil
@@ -101,7 +102,6 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)
 	}
-	fmt.Println(sql + ";")
 	return []string{sql + ";"}
 }
 
@@ -148,6 +148,10 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			s += " AUTO_INCREMENT"
 		}
 
+		if m.Comment != "" && m.TableComment == "" {
+			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
+		}
+
 		if m.Primary {
 			if s != "" {
 				s += ", "
@@ -172,10 +176,6 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			}
 			s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
 		}
-
-		if m.Comment != "" && m.TableComment == "" {
-			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
-		}
 		if m.TableComment != "" {
 			tableComment = m.TableComment
 			return nil
@@ -185,7 +185,6 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)
 	}
-	fmt.Println(sql + ";")
 	return []string{
 		sql + ";",
 	}
