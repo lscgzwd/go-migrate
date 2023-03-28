@@ -6,6 +6,7 @@ type Blueprint interface {
 	Text(name string) Blueprint
 	Integer(name string, length int) Blueprint
 	Date(name string) Blueprint
+	Comment(value string) Blueprint
 	Boolean(name string) Blueprint
 	DateTime(name string) Blueprint
 	Nullable() Blueprint
