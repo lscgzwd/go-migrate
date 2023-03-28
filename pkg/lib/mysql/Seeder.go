@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/laijunbin/go-migrate/pkg/interfaces"
-	mysql_interfaces "github.com/laijunbin/go-migrate/pkg/lib/mysql/interfaces"
-	"github.com/laijunbin/go-migrate/pkg/model"
+	"github.com/panda843/go-migrate/pkg/interfaces"
+	mysql_interfaces "github.com/panda843/go-migrate/pkg/lib/mysql/interfaces"
+	"github.com/panda843/go-migrate/pkg/model"
 	sk "github.com/laijunbin/go-solve-kit"
 )
 
