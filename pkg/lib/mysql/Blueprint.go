@@ -3,7 +3,7 @@ package mysql
 import (
 	"fmt"
 
-	"github.com/laijunbin/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/pkg/interfaces"
 	sk "github.com/laijunbin/go-solve-kit"
 )
 
