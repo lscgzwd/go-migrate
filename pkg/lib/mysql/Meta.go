@@ -114,7 +114,7 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)
 	}
-	fmt.Println(sql + ";")
+	fmt.Println(sql + ";\n")
 	return []string{sql + ";"}
 }
 
@@ -207,7 +207,7 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)
 	}
-	fmt.Println(sql + ";")
+	fmt.Println(sql + ";\n")
 	return []string{
 		sql + ";",
 	}
