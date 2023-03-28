@@ -3,7 +3,7 @@ package mysql
 import (
 	"strings"
 
-	"github.com/laijunbin/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/pkg/interfaces"
 )
 
 type foreignBlueprint struct {
