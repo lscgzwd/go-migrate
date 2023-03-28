@@ -3,8 +3,8 @@ package templates
 var MigrateTemplate = `package main
 
 import (
-	"github.com/laijunbin/go-migrate/cmd"
-	"github.com/laijunbin/go-migrate/config"
+	"github.com/panda843/go-migrate/cmd"
+	"github.com/panda843/go-migrate/config"
 	_ "%[2]s/databases"
 )
 

@@ -3,8 +3,8 @@ package templates
 var MigrationCreateTemplate = `package migrations
 
 import (
-	"github.com/laijunbin/go-migrate/config"
-	"github.com/laijunbin/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/config"
+	"github.com/panda843/go-migrate/pkg/interfaces"
 )
 
 func init() {
