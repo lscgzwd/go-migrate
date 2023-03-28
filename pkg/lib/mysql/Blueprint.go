@@ -3,8 +3,8 @@ package mysql
 import (
 	"fmt"
 
-	"github.com/panda843/go-migrate/pkg/interfaces"
 	sk "github.com/laijunbin/go-solve-kit"
+	"github.com/panda843/go-migrate/pkg/interfaces"
 )
 
 type Blueprint struct {
@@ -15,14 +15,16 @@ func NewBlueprint() interfaces.Blueprint {
 	return &Blueprint{}
 }
 
-func (bp *Blueprint) Id(name string, length int) {
+func (bp *Blueprint) Id(name string, length int) interfaces.Blueprint {
 	bp.metadata = append(bp.metadata, &meta{
 		Name:          name,
-		Type:          "INT",
+		Type:          "BIGINT",
 		Length:        length,
 		AutoIncrement: true,
 		Primary:       true,
+		Comment:       "索引ID",
 	})
+	return bp
 }
 
 func (bp *Blueprint) String(name string, length int) interfaces.Blueprint {
@@ -68,7 +70,16 @@ func (bp *Blueprint) Boolean(name string) interfaces.Blueprint {
 }
 
 func (bp *Blueprint) Comment(value string) interfaces.Blueprint {
-	bp.metadata[len(bp.metadata)-1].Comment = value
+	if len(bp.metadata) != 0 {
+		bp.metadata[len(bp.metadata)-1].Comment = value
+	}
+	return bp
+}
+
+func (bp *Blueprint) TableComment(value string) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		TableComment: value,
+	})
 	return bp
 }
 
@@ -85,6 +96,7 @@ func (bp *Blueprint) Timestamps() {
 		Name:    "created_at",
 		Type:    "DATETIME",
 		Default: "CURRENT_TIMESTAMP",
+		Comment: "创建时间",
 	})
 
 	bp.metadata = append(bp.metadata, &meta{
@@ -92,17 +104,22 @@ func (bp *Blueprint) Timestamps() {
 		Type:     "DATETIME",
 		Nullable: true,
 		Default:  "NULL",
+		Comment:  "更新时间",
 	})
 }
 
 func (bp *Blueprint) Nullable() interfaces.Blueprint {
-	bp.metadata[len(bp.metadata)-1].Nullable = true
+	if len(bp.metadata) != 0 {
+		bp.metadata[len(bp.metadata)-1].Nullable = true
+	}
 	return bp
 }
 
 func (bp *Blueprint) Unique(column ...string) interfaces.Blueprint {
 	if len(column) == 0 {
-		bp.metadata[len(bp.metadata)-1].Unique = true
+		if len(bp.metadata) != 0 {
+			bp.metadata[len(bp.metadata)-1].Unique = true
+		}
 	} else {
 		for _, c := range column {
 			bp.metadata = append(bp.metadata, &meta{
@@ -129,7 +146,9 @@ func (bp *Blueprint) Index(column ...string) interfaces.Blueprint {
 }
 
 func (bp *Blueprint) Default(value interface{}) interfaces.Blueprint {
-	bp.metadata[len(bp.metadata)-1].Default = fmt.Sprintf("'%v'", value)
+	if len(bp.metadata) != 0 {
+		bp.metadata[len(bp.metadata)-1].Default = fmt.Sprintf("'%v'", value)
+	}
 	return bp
 }
 

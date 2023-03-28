@@ -18,6 +18,7 @@ type meta struct {
 	Default       interface{}
 	Comment       string
 	Foreign       *foreignMeta
+	TableComment  string
 }
 
 type operation interface {
@@ -29,6 +30,7 @@ type alterOperation struct{}
 
 func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 	columns := sk.FromInterfaceArray(metadata)
+	tableComment := ""
 	proceedColumns := columns.Map(func(v sk.Type, i int) interface{} {
 		m := v.ValueOf().(*meta)
 
@@ -81,24 +83,30 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 		if m.Default != nil {
 			s += fmt.Sprintf(" DEFAULT %v", m.Default)
 		}
-		
-		if m.Comment != "" {
+
+		if m.Comment != "" && m.TableComment == "" {
 			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
 		}
-		
+		if m.TableComment != "" {
+			tableComment = m.TableComment
+		}
 		return s
 	})
 
 	columnsStr := proceedColumns.Filter(func(s sk.Type, i int) bool {
 		return s.ValueOf() != nil
 	}).ToStringArray().Join(", ").ValueOf()
-	sql := fmt.Sprintf("CREATE TABLE `%s` (%s);", table, columnsStr)
-	return []string{sql}
+	sql := fmt.Sprintf("CREATE TABLE `%s` (%s)", table, columnsStr)
+	if tableComment != "" {
+		sql += fmt.Sprintf(" comment='%s'", tableComment)
+	}
+	return []string{sql + ";"}
 }
 
 func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 	columns := sk.FromInterfaceArray(metadata)
-	sql := fmt.Sprintf("ALTER TABLE `%s` %s;", table, columns.Map(func(v sk.Type, i int) interface{} {
+	tableComment := ""
+	sql := fmt.Sprintf("ALTER TABLE `%s` %s", table, columns.Map(func(v sk.Type, i int) interface{} {
 		m := v.ValueOf().(*meta)
 
 		if m.Type == "DROP" {
@@ -162,15 +170,20 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			}
 			s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
 		}
-		
-		if m.Comment != "" {
+
+		if m.Comment != "" && m.TableComment == "" {
 			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
+		}
+		if m.TableComment != "" {
+			tableComment = m.TableComment
 		}
 		return s
 	}).ToStringArray().Join(", ").ValueOf())
-
+	if tableComment != "" {
+		sql += fmt.Sprintf(" comment='%s'", tableComment)
+	}
 	return []string{
-		sql,
+		sql + ";",
 	}
 }
 
