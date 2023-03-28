@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/panda843/go-migrate/pkg/interfaces"
-	mysql_interfaces "github.com/laijunbin/go-migrate/pkg/lib/mysql/interfaces"
+	mysql_interfaces "github.com/panda843/go-migrate/pkg/lib/mysql/interfaces"
 )
 
 type schema struct{}
