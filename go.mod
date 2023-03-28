@@ -1,4 +1,4 @@
-module github.com/laijunbin/go-migrate
+module github.com/panda843/go-migrate
 
 go 1.17
 
