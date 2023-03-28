@@ -68,9 +68,7 @@ func (bp *Blueprint) Boolean(name string) interfaces.Blueprint {
 }
 
 func (bp *Blueprint) Comment(value string) interfaces.Blueprint {
-	bp.metadata = append(bp.metadata, &meta{
-		Comment:value,
-	})
+	bp.metadata[len(bp.metadata)-1].Comment = value
 	return bp
 }
 
