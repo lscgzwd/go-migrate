@@ -89,6 +89,7 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 		}
 		if m.TableComment != "" {
 			tableComment = m.TableComment
+			return nil
 		}
 		return s
 	})
@@ -177,6 +178,7 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 		}
 		if m.TableComment != "" {
 			tableComment = m.TableComment
+			return nil
 		}
 		return s
 	}).ToStringArray().Join(", ").ValueOf())
