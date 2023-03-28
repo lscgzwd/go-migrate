@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/laijunbin/go-migrate/pkg/interfaces"
-	"github.com/laijunbin/go-migrate/pkg/model"
+	"github.com/panda843/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/pkg/model"
 )
 
 type migrator struct {
