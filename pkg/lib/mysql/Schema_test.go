@@ -3,9 +3,9 @@ package mysql_test
 import (
 	"testing"
 
-	"github.com/laijunbin/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/pkg/interfaces"
 
-	"github.com/laijunbin/go-migrate/pkg/lib/mysql"
+	"github.com/panda843/go-migrate/pkg/lib/mysql"
 	sk "github.com/laijunbin/go-solve-kit"
 )
 
