@@ -5,8 +5,7 @@ var MigrateTemplate = `package main
 import (
 	"github.com/laijunbin/go-migrate/cmd"
 	"github.com/laijunbin/go-migrate/config"
-	"github.com/laijunbin/go-migrate/pkg/lib/%[1]s"
-	_ "%[2]s/migrations"
+	_ "%[2]s/databases"
 )
 
 func init() {
