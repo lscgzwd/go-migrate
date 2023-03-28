@@ -155,7 +155,7 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 		}
 
 		if m.Collate != "" {
-			s += " " + m.Collate
+			s += " COLLATE " + m.Collate
 		}
 
 		if m.unsigned {
