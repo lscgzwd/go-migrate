@@ -7,7 +7,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
 
-	"github.com/laijunbin/go-migrate/config"
+	"github.com/panda843/go-migrate/config"
 )
 
 type driver struct {
