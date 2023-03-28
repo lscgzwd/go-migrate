@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/laijunbin/go-migrate/config"
-	"github.com/laijunbin/go-migrate/templates"
+	"github.com/panda843/go-migrate/config"
+	"github.com/panda843/go-migrate/templates"
 	"github.com/spf13/cobra"
 )
 
