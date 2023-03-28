@@ -5,6 +5,7 @@ var UserMigrationTemplate = `package migrations
 import (
 	"github.com/panda843/go-migrate/config"
 	"github.com/panda843/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/pkg/lib/mysql"
 )
 
 func init() {

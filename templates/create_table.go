@@ -5,6 +5,7 @@ var MigrationCreateTemplate = `package migrations
 import (
 	"github.com/panda843/go-migrate/config"
 	"github.com/panda843/go-migrate/pkg/interfaces"
+	"github.com/panda843/go-migrate/pkg/lib/mysql"
 )
 
 func init() {
@@ -19,7 +20,7 @@ func Create%[2]sTable() interfaces.Migration {
 
 func (t *%[2]sTable) Up() error {
 	return %[1]s.Schema.Create("%[3]s", func(table interfaces.Blueprint) {
-		table.Id("id", 10)
+		table.Id("id", 22)
 		table.Timestamps()
 	})
 }
