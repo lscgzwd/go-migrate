@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/laijunbin/go-migrate/templates"
+	"github.com/panda843/go-migrate/templates"
 	"github.com/spf13/cobra"
 	"golang.org/x/mod/modfile"
 )
