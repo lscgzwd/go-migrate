@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"sort"
 
+	sk "github.com/laijunbin/go-solve-kit"
 	"github.com/panda843/go-migrate/pkg/interfaces"
 	mysql_interfaces "github.com/panda843/go-migrate/pkg/lib/mysql/interfaces"
 	"github.com/panda843/go-migrate/pkg/model"
-	sk "github.com/laijunbin/go-solve-kit"
 )
 
 type seeder struct {
@@ -71,6 +71,8 @@ func runSeed(driver mysql_interfaces.Driver, table string, data ...map[string]in
 			sk.FromStringArray(keys).Join(", "),
 			sk.FromStringArray(values).Join(", "),
 		)
+
+		fmt.Println(sql + "\n")
 
 		if _, err := driver.Execute(sql); err != nil {
 			return err
