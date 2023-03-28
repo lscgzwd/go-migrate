@@ -114,6 +114,7 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)
 	}
+	fmt.Println(sql + ";")
 	return []string{sql + ";"}
 }
 
@@ -145,11 +146,20 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 
 		s := ""
 		if m.Type != "" {
-			s += fmt.Sprintf("ADD `%s` %s", m.Name, m.Type)
+			s += fmt.Sprintf("`%s` %s", m.Name, m.Type)
+		}
+		if m.Decimals != 0 {
+			s += fmt.Sprintf("(%d,%d)", m.Length, m.Decimals)
+		} else if m.Length != 0 {
+			s += fmt.Sprintf("(%d)", m.Length)
 		}
 
-		if m.Length != 0 {
-			s += fmt.Sprintf("(%d)", m.Length)
+		if m.Collate != "" {
+			s += " " + m.Collate
+		}
+
+		if m.unsigned {
+			s += " UNSIGNED"
 		}
 
 		if s != "" && !m.Nullable {
@@ -197,6 +207,7 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)
 	}
+	fmt.Println(sql + ";")
 	return []string{
 		sql + ";",
 	}
