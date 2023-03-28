@@ -67,6 +67,14 @@ func (bp *Blueprint) Boolean(name string) interfaces.Blueprint {
 	return bp
 }
 
+func (bp *Blueprint) Comment(value string) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		Name: value,
+		Type: "COMMENT",
+	})
+	return bp
+}
+
 func (bp *Blueprint) DateTime(name string) interfaces.Blueprint {
 	bp.metadata = append(bp.metadata, &meta{
 		Name: name,
