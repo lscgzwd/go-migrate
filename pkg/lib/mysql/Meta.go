@@ -16,6 +16,7 @@ type meta struct {
 	Primary       bool
 	AutoIncrement bool
 	Default       interface{}
+	Comment       string
 	Foreign       *foreignMeta
 }
 
@@ -80,7 +81,11 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 		if m.Default != nil {
 			s += fmt.Sprintf(" DEFAULT %v", m.Default)
 		}
-
+		
+		if m.Comment != "" {
+			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
+		}
+		
 		return s
 	})
 
@@ -157,7 +162,10 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			}
 			s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
 		}
-
+		
+		if m.Comment != "" {
+			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
+		}
 		return s
 	}).ToStringArray().Join(", ").ValueOf())
 
