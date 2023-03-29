@@ -20,6 +20,7 @@ type meta struct {
 	Collate       string
 	Default       interface{}
 	Comment       string
+	Custom        string
 	Foreign       *foreignMeta
 	TableComment  string
 }
@@ -49,6 +50,9 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 		if m.Type != "" {
 			s += fmt.Sprintf("`%s` %s", m.Name, m.Type)
 		}
+		if m.Custom != "" {
+			return m.Custom
+		}
 		if m.Decimals != 0 {
 			s += fmt.Sprintf("(%d,%d)", m.Length, m.Decimals)
 		} else if m.Length != 0 {
@@ -75,6 +79,10 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
 		}
 
+		if m.Default != nil {
+			s += fmt.Sprintf(" DEFAULT %v", m.Default)
+		}
+
 		if m.Primary {
 			if s != "" {
 				s += ", "
@@ -94,10 +102,6 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 				s += ", "
 			}
 			s += fmt.Sprintf("INDEX (`%s`)", m.Name)
-		}
-
-		if m.Default != nil {
-			s += fmt.Sprintf(" DEFAULT %v", m.Default)
 		}
 
 		if m.TableComment != "" {
@@ -148,6 +152,9 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 		if m.Type != "" {
 			s += fmt.Sprintf("`%s` %s", m.Name, m.Type)
 		}
+		if m.Custom != "" {
+			return m.Custom
+		}
 		if m.Decimals != 0 {
 			s += fmt.Sprintf("(%d,%d)", m.Length, m.Decimals)
 		} else if m.Length != 0 {
@@ -170,6 +177,10 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			s += " AUTO_INCREMENT"
 		}
 
+		if m.Default != nil {
+			s += fmt.Sprintf(" DEFAULT %v", m.Default)
+		}
+
 		if m.Comment != "" && m.TableComment == "" {
 			s += fmt.Sprintf(` COMMENT "%s"`, m.Comment)
 		}
@@ -179,10 +190,6 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 				s += ", "
 			}
 			s += fmt.Sprintf("ADD PRIMARY KEY (`%s`)", m.Name)
-		}
-
-		if m.Default != nil {
-			s += fmt.Sprintf(" DEFAULT %v", m.Default)
 		}
 
 		if m.Unique {

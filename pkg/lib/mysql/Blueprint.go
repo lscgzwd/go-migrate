@@ -45,6 +45,21 @@ func (bp *Blueprint) Text(name string) interfaces.Blueprint {
 	return bp
 }
 
+func (bp *Blueprint) CustomSql(sql string) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		Custom: sql,
+	})
+	return bp
+}
+
+func (bp *Blueprint) MediumText(name string) interfaces.Blueprint {
+	bp.metadata = append(bp.metadata, &meta{
+		Name: name,
+		Type: "MEDIUMTEXT",
+	})
+	return bp
+}
+
 func (bp *Blueprint) LongText(name string) interfaces.Blueprint {
 	bp.metadata = append(bp.metadata, &meta{
 		Name: name,

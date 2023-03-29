@@ -5,6 +5,8 @@ type Blueprint interface {
 	String(name string, length int) Blueprint
 	Text(name string) Blueprint
 	LongText(name string) Blueprint
+	MediumText(name string) Blueprint
+	CustomSql(sql string) Blueprint
 	BigInt(name string, length int) Blueprint
 	Integer(name string, length int) Blueprint
 	Decimal(name string, length, decimals int) Blueprint
