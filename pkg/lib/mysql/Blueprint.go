@@ -202,6 +202,30 @@ func (bp *Blueprint) Index(column ...string) interfaces.Blueprint {
 	return bp
 }
 
+func (bp *Blueprint) Add(b bool) interfaces.Blueprint {
+	var v = "MODIFY "
+	if b {
+		v = "ADD "
+	}
+	bp.metadata[len(bp.metadata)-1].Modify = v
+	return bp
+}
+
+func (bp *Blueprint) IndexWithName(name string, columns ...string) interfaces.Blueprint {
+	if name != "" && len(columns) > 0 {
+		for i := range columns {
+			columns[i] = fmt.Sprintf("`%s`", columns[i])
+		}
+		bp.metadata = append(bp.metadata, &meta{
+			IndexWithName: &indexWithName{
+				name:    name,
+				columns: columns,
+			},
+		})
+	}
+	return bp
+}
+
 func (bp *Blueprint) Default(value interface{}) interfaces.Blueprint {
 	if len(bp.metadata) != 0 {
 		bp.metadata[len(bp.metadata)-1].Default = fmt.Sprintf("'%v'", value)

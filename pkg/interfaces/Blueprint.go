@@ -18,8 +18,10 @@ type Blueprint interface {
 	DateTime(name string) Blueprint
 	Nullable() Blueprint
 	Unsigned() Blueprint
+	Add(bool) Blueprint
 	Unique(column ...string) Blueprint
 	Index(column ...string) Blueprint
+	IndexWithName(name string, columns ...string) Blueprint
 	Default(value interface{}) Blueprint
 	Foreign(name string) ForeignBlueprint
 	Primary(name ...string) Blueprint

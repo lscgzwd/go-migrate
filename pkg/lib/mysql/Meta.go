@@ -14,6 +14,8 @@ type meta struct {
 	Nullable      bool
 	Unique        bool
 	Index         bool
+	Modify        string
+	IndexWithName *indexWithName
 	Primary       bool
 	AutoIncrement bool
 	unsigned      bool
@@ -44,6 +46,10 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 
 		if m.Foreign != nil {
 			return m.Foreign.generateSql(table, m.Name)
+		}
+
+		if m.IndexWithName != nil {
+			return m.IndexWithName.generateSql()
 		}
 
 		s := ""
@@ -144,11 +150,19 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			return fmt.Sprintf("DROP `%s`", m.Name)
 		}
 
+		if m.IndexWithName != nil {
+			return fmt.Sprintf("ADD %s", m.IndexWithName.generateSql())
+		}
+
 		if m.Foreign != nil {
 			return fmt.Sprintf("ADD %s", m.Foreign.generateSql(table, m.Name))
 		}
 
 		s := ""
+		if m.Modify != "" {
+			s += m.Modify
+		}
+
 		if m.Type != "" {
 			s += fmt.Sprintf("`%s` %s", m.Name, m.Type)
 		}
