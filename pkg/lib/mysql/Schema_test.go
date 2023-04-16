@@ -86,8 +86,8 @@ func TestAlterUsersTable(t *testing.T) {
 
 	schema := &mysql.Schema_test{}
 	schema.Table(driver, "users", func(table interfaces.Blueprint) {
-		table.Integer("name", 10).Add(true)
-		table.String("price", 100).Add(true)
+		table.Integer("name", 10).Modify()
+		table.String("price", 100)
 		table.DropColumn("description")
 		table.DropColumn("enable")
 	})
@@ -109,7 +109,7 @@ func TestAlterProductsTable(t *testing.T) {
 
 	schema := &mysql.Schema_test{}
 	schema.Table(driver, "products", func(table interfaces.Blueprint) {
-		table.Integer("price", 10).Add(true)
+		table.Integer("price", 10)
 		table.DropPrimary()
 		table.DropForeign("user_id")
 		table.DropIndex("category_id")
