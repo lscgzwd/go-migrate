@@ -67,6 +67,7 @@ func TestCreateProductsTable(t *testing.T) {
 		table.Integer("category_id", 10).Index()
 		table.Boolean("enable").Default(1)
 		table.Timestamps()
+		table.DeletedAt(true)
 	})
 
 	expectedSqls := []string{
@@ -90,10 +91,11 @@ func TestAlterUsersTable(t *testing.T) {
 		table.String("price", 100)
 		table.DropColumn("description")
 		table.DropColumn("enable")
+		table.DeletedAt(true)
 	})
 
 	expectedSqls := []string{
-		"ALTER TABLE `users` MODIFY `name` INT(10) NOT NULL, ADD `price` VARCHAR(100) NOT NULL, DROP `description`, DROP `enable`;",
+		"ALTER TABLE `users` MODIFY `name` INT(10) NOT NULL, ADD `price` VARCHAR(100) NOT NULL, DROP `description`, DROP `enable`, ADD `deleted_at` DATETIME COMMENT \"删除时间\", ADD INDEX idx_deleted_at (`deleted_at`);",
 	}
 
 	sqls := driver.GetSqls()

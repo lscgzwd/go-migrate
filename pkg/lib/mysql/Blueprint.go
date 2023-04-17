@@ -158,6 +158,17 @@ func (bp *Blueprint) Timestamps() {
 	})
 }
 
+func (bp *Blueprint) DeletedAt(b bool) {
+	bp.metadata = append(bp.metadata, &meta{
+		Name:      "deleted_at",
+		Type:      "DATETIME",
+		Nullable:  true,
+		Comment:   "删除时间",
+		Index:     indexWithName{b: b},
+		IndexName: "idx_deleted_at",
+	})
+}
+
 func (bp *Blueprint) Nullable() interfaces.Blueprint {
 	if len(bp.metadata) != 0 {
 		bp.metadata[len(bp.metadata)-1].Nullable = true

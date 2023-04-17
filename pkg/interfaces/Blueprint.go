@@ -31,4 +31,5 @@ type Blueprint interface {
 	DropForeign(name string)
 	DropPrimary()
 	Timestamps()
+	DeletedAt(index bool)
 }
