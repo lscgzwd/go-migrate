@@ -94,37 +94,38 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 
 		var indexNameSql string
 		if m.Unique.b {
-			if m.IndexName != "" {
-				if len(m.Unique.columns) > 0 {
-					return m.Unique.generateSql(true, m.IndexName, "")
-				}
-				indexNameSql = fmt.Sprintf(", %s", m.Unique.generateSql(true, m.IndexName, m.Name))
+			if len(m.Unique.columns) > 0 {
+				return fmt.Sprintf("%s", m.Unique.generateSql(true, m.IndexName, ""))
 			} else {
-				if s != "" {
-					s += ", "
+				if m.IndexName != "" {
+					if s != "" {
+						indexNameSql = ", "
+					}
+					indexNameSql = fmt.Sprintf("%s%s", indexNameSql, m.Unique.generateSql(true, m.IndexName, m.Name))
+				} else {
+					if s != "" {
+						s += ", "
+					}
+					s += fmt.Sprintf("UNIQUE (`%s`)", m.Name)
 				}
-				s += fmt.Sprintf("UNIQUE (`%s`)", m.Name)
 			}
 		}
 
 		if m.Index.b {
-			if m.IndexName != "" {
-				if len(m.Index.columns) > 0 {
-					return m.Index.generateSql(false, m.IndexName, "")
-				}
-				if indexNameSql == "" {
-					indexNameSql = fmt.Sprintf(", %s", m.Index.generateSql(false, m.IndexName, m.Name))
+			if len(m.Index.columns) > 0 {
+				return fmt.Sprintf("%s", m.Index.generateSql(false, m.IndexName, ""))
+			} else {
+				if m.IndexName != "" && indexNameSql == "" {
+					if s != "" {
+						indexNameSql = ", "
+					}
+					indexNameSql = fmt.Sprintf("%s%s", indexNameSql, m.Index.generateSql(false, m.IndexName, m.Name))
 				} else {
 					if s != "" {
 						s += ", "
 					}
 					s += fmt.Sprintf("INDEX (`%s`)", m.Name)
 				}
-			} else {
-				if s != "" {
-					s += ", "
-				}
-				s += fmt.Sprintf("INDEX (`%s`)", m.Name)
 			}
 		}
 
@@ -217,43 +218,38 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			if s != "" {
 				s += ", "
 			}
+			fmt.Println(s)
 			s += fmt.Sprintf("ADD PRIMARY KEY (`%s`)", m.Name)
 		}
 
 		var indexNameSql string
 		if m.Unique.b {
-			if m.IndexName != "" {
-				if len(m.Unique.columns) > 0 {
-					return fmt.Sprintf("ADD %s", m.Unique.generateSql(true, m.IndexName, ""))
-				}
-				indexNameSql = fmt.Sprintf(", ADD %s", m.Unique.generateSql(true, m.IndexName, m.Name))
+			if len(m.Unique.columns) > 0 {
+				return fmt.Sprintf("ADD %s", m.Unique.generateSql(true, m.IndexName, ""))
 			} else {
-				if s != "" {
-					s += ", "
+				if m.IndexName != "" {
+					indexNameSql = fmt.Sprintf(", ADD %s", m.Unique.generateSql(true, m.IndexName, m.Name))
+				} else {
+					s += fmt.Sprintf("ADD UNIQUE (`%s`)", m.Name)
 				}
-				s += fmt.Sprintf("ADD UNIQUE (`%s`)", m.Name)
 			}
 		}
 
 		if m.Index.b {
-			if m.IndexName != "" {
-				if len(m.Index.columns) > 0 {
-					return fmt.Sprintf("ADD %s", m.Index.generateSql(false, m.IndexName, ""))
-				}
-				if indexNameSql == "" {
-					indexNameSql = fmt.Sprintf(", ADD %s", m.Index.generateSql(false, m.IndexName, m.Name))
+			if len(m.Index.columns) > 0 {
+				return fmt.Sprintf("ADD %s", m.Index.generateSql(false, m.IndexName, ""))
+			} else {
+				if m.IndexName != "" && indexNameSql == "" {
+					if s != "" {
+						indexNameSql += ", "
+					}
+					indexNameSql = fmt.Sprintf("%sADD %s", indexNameSql, m.Index.generateSql(false, m.IndexName, m.Name))
 				} else {
 					if s != "" {
 						s += ", "
 					}
 					s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
 				}
-
-			} else {
-				if s != "" {
-					s += ", "
-				}
-				s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
 			}
 		}
 		if m.TableComment != "" {

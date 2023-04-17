@@ -153,7 +153,7 @@ func (bp *Blueprint) Timestamps() {
 		Name:     "updated_at",
 		Type:     "DATETIME",
 		Nullable: true,
-		Default:  "NULL",
+		Default:  "CURRENT_TIMESTAMP",
 		Comment:  "更新时间",
 	})
 }

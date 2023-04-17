@@ -93,7 +93,7 @@ func TestAlterUsersTable(t *testing.T) {
 	})
 
 	expectedSqls := []string{
-		"ALTER TABLE `users` ADD `name` INT(10) NOT NULL, ADD `price` VARCHAR(100) NOT NULL, DROP `description`, DROP `enable`;",
+		"ALTER TABLE `users` MODIFY `name` INT(10) NOT NULL, ADD `price` VARCHAR(100) NOT NULL, DROP `description`, DROP `enable`;",
 	}
 
 	sqls := driver.GetSqls()
