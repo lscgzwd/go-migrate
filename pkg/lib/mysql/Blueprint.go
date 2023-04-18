@@ -153,8 +153,19 @@ func (bp *Blueprint) Timestamps() {
 		Name:     "updated_at",
 		Type:     "DATETIME",
 		Nullable: true,
-		Default:  "NULL",
+		Default:  "CURRENT_TIMESTAMP",
 		Comment:  "更新时间",
+	})
+}
+
+func (bp *Blueprint) DeletedAt(b bool) {
+	bp.metadata = append(bp.metadata, &meta{
+		Name:      "deleted_at",
+		Type:      "DATETIME",
+		Nullable:  true,
+		Comment:   "删除时间",
+		Index:     indexWithName{b: b},
+		IndexName: "idx_deleted_at",
 	})
 }
 
@@ -173,31 +184,32 @@ func (bp *Blueprint) Unsigned() interfaces.Blueprint {
 }
 
 func (bp *Blueprint) Unique(column ...string) interfaces.Blueprint {
-	if len(column) == 0 {
-		if len(bp.metadata) != 0 {
-			bp.metadata[len(bp.metadata)-1].Unique = true
-		}
-	} else {
-		for _, c := range column {
-			bp.metadata = append(bp.metadata, &meta{
-				Name:   c,
-				Unique: true,
-			})
-		}
+	if len(column) == 0 && len(bp.metadata) > 0 {
+		bp.metadata[len(bp.metadata)-1].Unique = indexWithName{b: true}
+	}
+	if len(column) > 0 {
+		bp.metadata = append(bp.metadata, &meta{Unique: indexWithName{b: true, columns: column}})
 	}
 	return bp
 }
 
 func (bp *Blueprint) Index(column ...string) interfaces.Blueprint {
 	if len(column) == 0 {
-		bp.metadata[len(bp.metadata)-1].Index = true
+		bp.metadata[len(bp.metadata)-1].Index = indexWithName{b: true}
 	} else {
-		for _, c := range column {
-			bp.metadata = append(bp.metadata, &meta{
-				Name:  c,
-				Index: true,
-			})
-		}
+		bp.metadata = append(bp.metadata, &meta{Index: indexWithName{b: true, columns: column}})
+	}
+	return bp
+}
+
+func (bp *Blueprint) Modify() interfaces.Blueprint {
+	bp.metadata[len(bp.metadata)-1].Modify = true
+	return bp
+}
+
+func (bp *Blueprint) IndexName(name string) interfaces.Blueprint {
+	if name != "" && len(bp.metadata) > 0 {
+		bp.metadata[len(bp.metadata)-1].IndexName = name
 	}
 	return bp
 }
@@ -237,14 +249,14 @@ func (bp *Blueprint) DropUnique(name string) {
 	bp.metadata = append(bp.metadata, &meta{
 		Name:   name,
 		Type:   "DROP",
-		Unique: true,
+		Unique: indexWithName{b: true},
 	})
 }
 func (bp *Blueprint) DropIndex(name string) {
 	bp.metadata = append(bp.metadata, &meta{
 		Name:  name,
 		Type:  "DROP",
-		Index: true,
+		Index: indexWithName{b: true},
 	})
 }
 func (bp *Blueprint) DropForeign(name string) {

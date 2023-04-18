@@ -12,8 +12,10 @@ type meta struct {
 	Length        int
 	Decimals      int
 	Nullable      bool
-	Unique        bool
-	Index         bool
+	Unique        indexWithName
+	Index         indexWithName
+	Modify        bool
+	IndexName     string
 	Primary       bool
 	AutoIncrement bool
 	unsigned      bool
@@ -60,7 +62,7 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 		}
 
 		if m.Collate != "" {
-			s += "  COLLATE " + m.Collate
+			s += " COLLATE " + m.Collate
 		}
 
 		if m.unsigned {
@@ -90,25 +92,48 @@ func (o *createOperation) generateSql(table string, metadata []*meta) []string {
 			s += fmt.Sprintf("PRIMARY KEY (`%s`)", m.Name)
 		}
 
-		if m.Unique {
-			if s != "" {
-				s += ", "
+		var indexNameSql string
+		if m.Unique.b {
+			if len(m.Unique.columns) > 0 {
+				return fmt.Sprintf("%s", m.Unique.generateSql(true, m.IndexName, ""))
+			} else {
+				if m.IndexName != "" {
+					if s != "" {
+						indexNameSql = ", "
+					}
+					indexNameSql = fmt.Sprintf("%s%s", indexNameSql, m.Unique.generateSql(true, m.IndexName, m.Name))
+				} else {
+					if s != "" {
+						s += ", "
+					}
+					s += fmt.Sprintf("UNIQUE (`%s`)", m.Name)
+				}
 			}
-			s += fmt.Sprintf("UNIQUE (`%s`)", m.Name)
 		}
 
-		if m.Index {
-			if s != "" {
-				s += ", "
+		if m.Index.b {
+			if len(m.Index.columns) > 0 {
+				return fmt.Sprintf("%s", m.Index.generateSql(false, m.IndexName, ""))
+			} else {
+				if m.IndexName != "" && indexNameSql == "" {
+					if s != "" {
+						indexNameSql = ", "
+					}
+					indexNameSql = fmt.Sprintf("%s%s", indexNameSql, m.Index.generateSql(false, m.IndexName, m.Name))
+				} else {
+					if s != "" {
+						s += ", "
+					}
+					s += fmt.Sprintf("INDEX (`%s`)", m.Name)
+				}
 			}
-			s += fmt.Sprintf("INDEX (`%s`)", m.Name)
 		}
 
 		if m.TableComment != "" {
 			tableComment = m.TableComment
 			return nil
 		}
-		return s
+		return s + indexNameSql
 	})
 
 	columnsStr := proceedColumns.Filter(func(s sk.Type, i int) bool {
@@ -133,7 +158,7 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 				return "DROP PRIMARY KEY"
 			}
 
-			if m.Index || m.Unique {
+			if m.Index.b || m.Unique.b {
 				return fmt.Sprintf("DROP INDEX `%s`", m.Name)
 			}
 
@@ -148,7 +173,11 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			return fmt.Sprintf("ADD %s", m.Foreign.generateSql(table, m.Name))
 		}
 
-		s := ""
+		s := "ADD "
+		if m.Modify {
+			s = "MODIFY "
+		}
+
 		if m.Type != "" {
 			s += fmt.Sprintf("`%s` %s", m.Name, m.Type)
 		}
@@ -189,27 +218,45 @@ func (o *alterOperation) generateSql(table string, metadata []*meta) []string {
 			if s != "" {
 				s += ", "
 			}
+			fmt.Println(s)
 			s += fmt.Sprintf("ADD PRIMARY KEY (`%s`)", m.Name)
 		}
 
-		if m.Unique {
-			if s != "" {
-				s += ", "
+		var indexNameSql string
+		if m.Unique.b {
+			if len(m.Unique.columns) > 0 {
+				return fmt.Sprintf("ADD %s", m.Unique.generateSql(true, m.IndexName, ""))
+			} else {
+				if m.IndexName != "" {
+					indexNameSql = fmt.Sprintf(", ADD %s", m.Unique.generateSql(true, m.IndexName, m.Name))
+				} else {
+					s += fmt.Sprintf("ADD UNIQUE (`%s`)", m.Name)
+				}
 			}
-			s += fmt.Sprintf("ADD UNIQUE (`%s`)", m.Name)
 		}
 
-		if m.Index {
-			if s != "" {
-				s += ", "
+		if m.Index.b {
+			if len(m.Index.columns) > 0 {
+				return fmt.Sprintf("ADD %s", m.Index.generateSql(false, m.IndexName, ""))
+			} else {
+				if m.IndexName != "" && indexNameSql == "" {
+					if s != "" {
+						indexNameSql += ", "
+					}
+					indexNameSql = fmt.Sprintf("%sADD %s", indexNameSql, m.Index.generateSql(false, m.IndexName, m.Name))
+				} else {
+					if s != "" {
+						s += ", "
+					}
+					s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
+				}
 			}
-			s += fmt.Sprintf("ADD INDEX (`%s`)", m.Name)
 		}
 		if m.TableComment != "" {
 			tableComment = m.TableComment
 			return nil
 		}
-		return s
+		return s + indexNameSql
 	}).ToStringArray().Join(", ").ValueOf())
 	if tableComment != "" {
 		sql += fmt.Sprintf(" comment='%s'", tableComment)

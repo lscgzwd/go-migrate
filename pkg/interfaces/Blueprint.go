@@ -18,8 +18,10 @@ type Blueprint interface {
 	DateTime(name string) Blueprint
 	Nullable() Blueprint
 	Unsigned() Blueprint
+	Modify() Blueprint
 	Unique(column ...string) Blueprint
 	Index(column ...string) Blueprint
+	IndexName(name string) Blueprint
 	Default(value interface{}) Blueprint
 	Foreign(name string) ForeignBlueprint
 	Primary(name ...string) Blueprint
@@ -29,4 +31,5 @@ type Blueprint interface {
 	DropForeign(name string)
 	DropPrimary()
 	Timestamps()
+	DeletedAt(index bool)
 }
