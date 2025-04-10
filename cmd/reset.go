@@ -6,7 +6,7 @@ import (
 	"reflect"
 	"sort"
 
-	"github.com/panda843/go-migrate/config"
+	"github.com/lscgzwd/go-migrate/config"
 	"github.com/spf13/cobra"
 )
 

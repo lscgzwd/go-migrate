@@ -6,7 +6,7 @@ import (
 	"os"
 	"os/exec"
 
-	"github.com/panda843/go-migrate/cmd"
+	"github.com/lscgzwd/go-migrate/cmd"
 )
 
 func main() {

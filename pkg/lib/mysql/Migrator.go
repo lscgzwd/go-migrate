@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/panda843/go-migrate/pkg/interfaces"
-	"github.com/panda843/go-migrate/pkg/model"
+	"github.com/lscgzwd/go-migrate/pkg/interfaces"
+	"github.com/lscgzwd/go-migrate/pkg/model"
 )
 
 type migrator struct {

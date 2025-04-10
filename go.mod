@@ -1,4 +1,4 @@
-module github.com/panda843/go-migrate
+module github.com/lscgzwd/go-migrate
 
 go 1.17
 

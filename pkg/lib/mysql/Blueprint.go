@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	sk "github.com/laijunbin/go-solve-kit"
-	"github.com/panda843/go-migrate/pkg/interfaces"
+	"github.com/lscgzwd/go-migrate/pkg/interfaces"
 )
 
 type Blueprint struct {

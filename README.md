@@ -12,7 +12,7 @@
 
 # Install
 ```
-$ go install github.com/panda843/go-migrate@latest
+$ go install github.com/lscgzwd/go-migrate@latest
 ```
 
 # Quick start

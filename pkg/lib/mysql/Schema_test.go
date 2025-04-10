@@ -3,10 +3,10 @@ package mysql_test
 import (
 	"testing"
 
-	"github.com/panda843/go-migrate/pkg/interfaces"
+	"github.com/lscgzwd/go-migrate/pkg/interfaces"
 
 	sk "github.com/laijunbin/go-solve-kit"
-	"github.com/panda843/go-migrate/pkg/lib/mysql"
+	"github.com/lscgzwd/go-migrate/pkg/lib/mysql"
 )
 
 func checkDriverClosed(t *testing.T, driver *mysql.MockDriver) {

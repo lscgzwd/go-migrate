@@ -5,9 +5,9 @@ import (
 	"sort"
 
 	sk "github.com/laijunbin/go-solve-kit"
-	"github.com/panda843/go-migrate/pkg/interfaces"
-	mysql_interfaces "github.com/panda843/go-migrate/pkg/lib/mysql/interfaces"
-	"github.com/panda843/go-migrate/pkg/model"
+	"github.com/lscgzwd/go-migrate/pkg/interfaces"
+	mysql_interfaces "github.com/lscgzwd/go-migrate/pkg/lib/mysql/interfaces"
+	"github.com/lscgzwd/go-migrate/pkg/model"
 )
 
 type seeder struct {

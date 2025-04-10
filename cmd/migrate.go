@@ -5,8 +5,8 @@ import (
 	"os"
 	"reflect"
 
-	"github.com/panda843/go-migrate/config"
-	"github.com/panda843/go-migrate/pkg/interfaces"
+	"github.com/lscgzwd/go-migrate/config"
+	"github.com/lscgzwd/go-migrate/pkg/interfaces"
 	"github.com/spf13/cobra"
 )
 
