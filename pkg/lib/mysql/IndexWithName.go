@@ -17,7 +17,9 @@ func (iwn *indexWithName) generateSql(isUnique bool, name string, column string)
 	}
 	if len(iwn.columns) > 0 {
 		for i := range iwn.columns {
-			iwn.columns[i] = fmt.Sprintf("`%s`", iwn.columns[i])
+			if !strings.ContainsAny(iwn.columns[i], "`(") {
+				iwn.columns[i] = fmt.Sprintf("`%s`", iwn.columns[i])
+			}
 		}
 		return fmt.Sprintf("%sINDEX %s (%s)", index, name, strings.Join(iwn.columns, ","))
 	}
